@@ -91,61 +91,57 @@ export default function Reviews({ darkMode }) {
 
   // Auto-play
   useEffect(() => {
-    const t = setInterval(next, 5000);
+    const t = setInterval(next, 6000);
     return () => clearInterval(t);
   }, [next]);
 
   const variants = {
-    enter: (dir) => ({ x: dir > 0 ? 120 : -120, opacity: 0, scale: 0.95 }),
-    center: { x: 0, opacity: 1, scale: 1 },
-    exit: (dir) => ({ x: dir > 0 ? -120 : 120, opacity: 0, scale: 0.95 }),
+    enter: (dir) => ({ x: dir > 0 ? 40 : -40, opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (dir) => ({ x: dir > 0 ? -40 : 40, opacity: 0 }),
   };
 
   const r = reviews[current];
 
   return (
-    <section id="reviews" className={`py-24 px-6 ${darkMode ? 'bg-[#110b05]' : 'bg-white'}`}>
-      <div ref={ref} style={{ maxWidth: 1000, marginLeft: 'auto', marginRight: 'auto' }}>
+    <section id="reviews" className={`py-32 px-6 overflow-hidden ${darkMode ? 'bg-[#0a0603]' : 'bg-[#FAF8F5]'}`}>
+      <div ref={ref} className="w-full" style={{ maxWidth: 1000, margin: '0 auto' }}>
+        
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="text-center mb-16"
+          className="text-center mb-14"
         >
-          <div className="section-tag">⭐ Testimoni</div>
-          <h2 className="section-title">Apa Kata <span className="gradient-text">Pengunjung</span></h2>
-          <div className="divider" />
-
-          {/* Overall rating */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={inView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ delay: 0.3 }}
-            className="inline-flex items-center gap-6 mt-6 px-8 py-4 rounded-2xl"
-            style={{
-              background: darkMode ? '#1a1008' : '#FAF8F5',
-              border: darkMode ? '1px solid #3d2a18' : '1px solid rgba(214,181,142,0.3)',
-            }}
-          >
-            <div>
-              <div className="text-5xl font-bold" style={{ color: '#C97A40', fontFamily: 'Playfair Display, serif' }}>4.7</div>
-              <div className={`text-sm mt-1 ${darkMode ? 'text-[#c8b8a0]' : 'text-[#7a6a5a]'}`}>dari 5 bintang</div>
-            </div>
-            <div className="w-px h-14 bg-[#D6B58E]/30" />
-            <div>
-              <div className="flex gap-1 mb-1">
-                {[1,2,3,4,5].map(s => (
-                  <StarIcon key={s} size={20} fill={s <= 4 ? '#C97A40' : 'rgba(214, 181, 142, 0.5)'} color={s <= 4 ? '#C97A40' : 'rgba(214, 181, 142, 0.5)'} />
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
+            style={{ background: 'rgba(201,122,64,0.1)', border: '1px solid rgba(201,122,64,0.2)' }}>
+            <StarIcon size={14} color="#C97A40" fill="#C97A40" />
+            <span className="text-xs font-bold tracking-widest text-[#C97A40] uppercase">Testimoni</span>
+          </div>
+          
+          <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{ fontFamily: 'Playfair Display, serif', color: darkMode ? '#f0e8dc' : '#3B2A1E' }}>
+            Apa Kata <span style={{ color: '#C97A40' }}>Pengunjung</span>
+          </h2>
+          
+          {/* Rating Summary */}
+          <div className="flex items-center justify-center gap-4 text-sm" style={{ color: darkMode ? '#c8b8a0' : '#7a6a5a' }}>
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-lg text-[#C97A40]">4.7</span>
+              <div className="flex gap-0.5">
+                {[1, 2, 3, 4, 5].map(s => (
+                  <StarIcon key={s} size={14} fill={s <= 4 ? '#C97A40' : 'rgba(201, 122, 64, 0.3)'} color={s <= 4 ? '#C97A40' : 'transparent'} />
                 ))}
               </div>
-              <div className={`text-sm ${darkMode ? 'text-[#c8b8a0]' : 'text-[#7a6a5a]'}`}>670+ Ulasan</div>
             </div>
-          </motion.div>
+            <div className="w-1 h-1 rounded-full bg-[#D6B58E]/50" />
+            <span>670+ Ulasan</span>
+          </div>
         </motion.div>
 
-        {/* Main testimonial card */}
-        <div className="relative">
+        {/* Main Testimonial Area */}
+        <div className="relative w-full" style={{ maxWidth: 850, margin: '0 auto' }}>
           <AnimatePresence custom={direction} mode="wait">
             <motion.div
               key={r.id}
@@ -154,128 +150,113 @@ export default function Reviews({ darkMode }) {
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 0.4, ease: 'easeInOut' }}
-              className="testimonial-card relative"
+              transition={{ duration: 0.5, ease: 'easeInOut' }}
+              className="relative rounded-3xl p-8 md:p-10 w-full"
+              style={{
+                background: darkMode ? '#140c07' : '#ffffff',
+                border: darkMode ? '1px solid #2a1a0f' : '1px solid rgba(214,181,142,0.2)',
+                boxShadow: darkMode ? '0 20px 40px rgba(0,0,0,0.4)' : '0 20px 40px rgba(59,42,30,0.05)',
+              }}
             >
-              {/* Quote icon */}
-              <div className="absolute -top-5 -left-5 w-12 h-12 rounded-2xl flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, #C97A40, #a85e28)' }}>
-                <QuoteIcon size={20} color="white" />
+              {/* Quote Icon */}
+              <div className="absolute top-6 right-8 opacity-10 pointer-events-none hidden md:block">
+                <QuoteIcon size={80} color="#C97A40" />
               </div>
 
-              <div className="grid md:grid-cols-3 gap-8 items-center pt-4">
-                {/* Reviewer info */}
-                <div className="flex flex-col items-center text-center md:border-r md:border-[#D6B58E]/20 md:pr-8">
-                  <div className="relative mb-4">
+              <div className="flex flex-col md:flex-row gap-8 items-center md:items-start relative z-10 w-full">
+                
+                {/* 35% Customer Profile */}
+                <div className="w-full md:w-1/3 flex flex-col items-center md:items-start text-center md:text-left md:border-r border-[#D6B58E]/20 md:pr-8">
+                  <div className="relative mb-5">
                     <img
                       src={r.avatar}
                       alt={r.name}
                       className="w-20 h-20 rounded-full object-cover"
-                      style={{ border: '3px solid #C97A40' }}
+                      style={{ border: '2px solid #C97A40', padding: '2px' }}
                     />
-                    <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center"
-                      style={{ background: '#C97A40', border: '2px solid white' }}>
-                      <StarIcon size={14} fill="white" color="white" />
-                    </div>
                   </div>
-                  <h4 className="font-bold text-lg"
+                  <h4 className="font-bold text-xl mb-1"
                     style={{ color: darkMode ? '#f0e8dc' : '#3B2A1E', fontFamily: 'Playfair Display, serif' }}>
                     {r.name}
                   </h4>
-                  <p style={{ color: '#C97A40', fontSize: 13 }} className="font-medium">{r.role}</p>
-                  <div className="flex gap-1 mt-2">
+                  <p className="text-sm font-medium mb-3" style={{ color: '#C97A40' }}>{r.role}</p>
+                  
+                  <div className="flex gap-1 mb-2">
                     {[...Array(r.rating)].map((_, i) => (
                       <StarIcon key={i} size={14} fill="#C97A40" color="#C97A40" />
                     ))}
                   </div>
-                  <p className={`text-xs mt-2 ${darkMode ? 'text-[#c8b8a0]' : 'text-[#9a8a7a]'}`}>{r.date}</p>
                 </div>
 
-                {/* Review text */}
-                <div className="md:col-span-2">
-                  <p className="text-lg leading-relaxed italic"
+                {/* 65% Review Content */}
+                <div className="w-full md:w-2/3 flex flex-col justify-center" style={{ minHeight: 140 }}>
+                  <p className="text-xl md:text-2xl leading-relaxed italic"
                     style={{
-                      color: darkMode ? '#e0d0bc' : '#4a3a2a',
+                      color: darkMode ? '#e0d0bc' : '#3B2A1E',
                       fontFamily: 'Cormorant Garamond, serif',
-                      fontSize: 'clamp(1rem, 1.5vw, 1.2rem)',
                     }}>
                     "{r.text}"
                   </p>
                 </div>
+
               </div>
             </motion.div>
           </AnimatePresence>
 
-          {/* Navigation */}
-          <div className="flex items-center justify-between mt-10">
+          {/* Navigation Controls */}
+          <div className="flex items-center justify-between mt-10 px-2 md:px-0">
+            
+            {/* Dots Indicator */}
             <div className="flex gap-2">
               {reviews.map((_, i) => (
-                <motion.button
+                <button
                   key={i}
                   onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }}
-                  whileHover={{ scale: 1.2 }}
                   className="rounded-full transition-all duration-300"
                   style={{
-                    width: i === current ? 32 : 10,
-                    height: 10,
-                    background: i === current ? '#C97A40' : (darkMode ? '#3d2a18' : 'rgba(201,122,64,0.2)'),
+                    width: i === current ? 24 : 8,
+                    height: 8,
+                    background: i === current ? '#C97A40' : (darkMode ? '#2a1a0f' : 'rgba(214,181,142,0.4)'),
+                    border: 'none',
+                    padding: 0,
                   }}
+                  aria-label={`Go to review ${i + 1}`}
                 />
               ))}
             </div>
 
+            {/* Prev/Next Buttons */}
             <div className="flex gap-3">
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+              <button
                 onClick={prev}
-                className="w-12 h-12 rounded-full flex items-center justify-center"
+                className="w-12 h-12 rounded-full flex items-center justify-center transition-all hover:scale-105"
                 style={{
-                  background: darkMode ? '#1a1008' : '#FAF8F5',
-                  border: darkMode ? '1px solid #3d2a18' : '1px solid rgba(214,181,142,0.3)',
+                  background: darkMode ? '#1a1008' : '#fff',
+                  border: darkMode ? '1px solid #3d2a18' : '1px solid rgba(214,181,142,0.4)',
                   color: darkMode ? '#f0e8dc' : '#3B2A1E',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                  cursor: 'pointer'
                 }}
               >
                 <ChevronLeftIcon size={20} />
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+              </button>
+              <button
                 onClick={next}
-                className="w-12 h-12 rounded-full flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, #C97A40, #a85e28)', color: 'white' }}
+                className="w-12 h-12 rounded-full flex items-center justify-center transition-all hover:scale-105"
+                style={{ 
+                  background: 'linear-gradient(135deg, #C97A40, #a85e28)', 
+                  color: 'white',
+                  border: 'none',
+                  boxShadow: '0 4px 15px rgba(201,122,64,0.3)',
+                  cursor: 'pointer'
+                }}
               >
                 <ChevronRightIcon size={20} />
-              </motion.button>
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Mini cards row */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-12">
-          {reviews.map((r2, i) => (
-            <motion.button
-              key={r2.id}
-              onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }}
-              whileHover={{ y: -4 }}
-              className="flex flex-col items-center p-3 rounded-2xl transition-all"
-              style={{
-                background: current === i
-                  ? 'linear-gradient(135deg, rgba(201,122,64,0.15), rgba(201,122,64,0.05))'
-                  : (darkMode ? '#1a1008' : 'transparent'),
-                border: current === i
-                  ? '1px solid rgba(201,122,64,0.4)'
-                  : '1px solid transparent',
-              }}
-            >
-              <img src={r2.avatar} alt={r2.name} className="w-10 h-10 rounded-full object-cover mb-2"
-                style={{ border: current === i ? '2px solid #C97A40' : '2px solid transparent' }} />
-              <span className={`text-xs font-medium ${darkMode ? 'text-[#f0e8dc]' : 'text-[#3B2A1E]'}`}>
-                {r2.name.split(' ')[0]}
-              </span>
-            </motion.button>
-          ))}
-        </div>
       </div>
     </section>
   );
